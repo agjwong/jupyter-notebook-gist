@@ -10,6 +10,6 @@ python:
   - "nightly" # currently points to 3.6-dev
 # dependencies
 install:
-  - pip install tornado
+  - pip install jupyter
 # command to run tests
 script: cd jupyter-notebook-gist && nosetests test_create_gist.py
