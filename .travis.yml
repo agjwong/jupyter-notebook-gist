@@ -11,5 +11,6 @@ python:
 # dependencies
 install:
   - pip install jupyter
+  - pip install ipython
 # command to run tests
 script: cd jupyter-notebook-gist && nosetests test_create_gist.py
