@@ -354,7 +354,7 @@ class TestBaseHandler(unittest.TestCase):
 
         nb = new_notebook(
             cells=[
-                new_markdown_cell(u'Testing')
+                new_markdown_cell("Testing")
             ])
 
         with io.open(os.path.join(nbdir, fname), 'w',
