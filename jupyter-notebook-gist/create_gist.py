@@ -144,7 +144,7 @@ class BaseHandler(IPythonHandler):
         try:
             notebook_output, _ = export_by_name("notebook", nb_path)
             python_output, _ = export_by_name("python", nb_path)
-        except IOError as e: #python 2 does not support FileNotFoundError
+        except OSError as e: #python 2 does not support FileNotFoundError
             raise_error("Couldn't export notebook contents")
 
         return (notebook_output, python_output)
