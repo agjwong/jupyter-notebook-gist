@@ -13,5 +13,6 @@ install:
   - pip install jupyter
   - pip install ipython
   - pip install traitlets
+  - pip install requests
 # command to run tests
 script: cd jupyter-notebook-gist && nosetests test_create_gist.py
