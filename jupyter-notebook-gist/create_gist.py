@@ -25,6 +25,11 @@ class BaseHandler(IPythonHandler):
     api_root = "https://api.github.com"
     client_id = None
     client_secret = None
+    
+    # To allow "empty" initialization for testing purposes.  Otherwise
+    # parent class constructor should be called instead
+    def __init__(self):
+        pass
 
     # Extracts the access code from the arguments dictionary (given back
     # from github)
