@@ -84,6 +84,8 @@ class TestBaseHandler(unittest.TestCase):
                       "get the URL for the gist that was just updated)"
     gitHubError = "HTTP 500: Internal Server Error (ERROR: Github " \
                   "returned the following: "
+                  
+    base = BaseHandler()
 
     def _should_throw_error(self, func, args, error):
 
@@ -101,7 +103,7 @@ class TestBaseHandler(unittest.TestCase):
         expected_code_bytes = str.encode(expected_code)
         args = {"code": [expected_code_bytes]}
 
-        self.assertEqual(BaseHandler.extract_code_from_args(BaseHandler, args),
+        self.assertEqual(BaseHandler.extract_code_from_args(base, args),
                          expected_code)
 
     def test_extract_code_from_args_none_in_list(self):
@@ -131,7 +133,7 @@ class TestBaseHandler(unittest.TestCase):
         expected_code_bytes = str.encode(expected_code)
         args = {"code": [expected_code_bytes]}
 
-        self.assertEqual(BaseHandler.extract_code_from_args(BaseHandler, args),
+        self.assertEqual(BaseHandler.extract_code_from_args(base, args),
                          expected_code)
 
     def test_extract_code_from_args_code_is_empty_str(self):
@@ -185,7 +187,7 @@ class TestBaseHandler(unittest.TestCase):
 
         args = {"nb_path": [encodedPath]}
 
-        self.assertEqual(BaseHandler.extract_notebook_path_from_args(BaseHandler,
+        self.assertEqual(BaseHandler.extract_notebook_path_from_args(base,
                          args), somePath)
 
     def test_extract_notebook_path_from_args_none_in_list(self):
@@ -219,7 +221,7 @@ class TestBaseHandler(unittest.TestCase):
 
         args = {"nb_path": [encodedPath]}
 
-        self.assertEqual(BaseHandler.extract_notebook_path_from_args(BaseHandler,
+        self.assertEqual(BaseHandler.extract_notebook_path_from_args(base,
                          args), somePath)
 
     def test_extract_notebook_path_from_args_code_is_empty_str(self):
@@ -292,7 +294,7 @@ class TestBaseHandler(unittest.TestCase):
 
         filename = "somefile"
 
-        self.assertEqual(BaseHandler.get_notebook_filename(BaseHandler, filename),
+        self.assertEqual(BaseHandler.get_notebook_filename(base, filename),
                          (filename, filename))
 
     def test_get_notebook_filename_extension(self):
@@ -300,21 +302,21 @@ class TestBaseHandler(unittest.TestCase):
         filename_no_ext = "somefile"
         filename = filename_no_ext + ".abc"
 
-        self.assertEqual(BaseHandler.get_notebook_filename(BaseHandler, filename),
+        self.assertEqual(BaseHandler.get_notebook_filename(base, filename),
                          (filename, filename_no_ext))
 
     def test_get_notebook_filename_path_no_extension(self):
 
         filename = "somefile"
 
-        self.assertEqual(BaseHandler.get_notebook_filename(BaseHandler), (filename, filename))
+        self.assertEqual(BaseHandler.get_notebook_filename(base), (filename, filename))
 
     def test_get_notebook_filename_path_extension(self):
 
         filename_no_ext = "somefile"
         filename = filename_no_ext + ".abc"
 
-        self.assertEqual(BaseHandler.get_notebook_filename(BaseHandler,
+        self.assertEqual(BaseHandler.get_notebook_filename(base,
                          "/a/b/c/" + filename), (filename, filename_no_ext))
 
     def test_get_notebook_filename_double_dot(self):
@@ -322,7 +324,7 @@ class TestBaseHandler(unittest.TestCase):
         filename_no_ext = "some.file"
         filename = filename_no_ext + ".abc"
 
-        self.assertEqual(BaseHandler.get_notebook_filename(BaseHandler, filename),
+        self.assertEqual(BaseHandler.get_notebook_filename(base, filename),
                          (filename, filename_no_ext))
 
     # ####################end of get_notebook_filename tests
@@ -360,7 +362,7 @@ class TestBaseHandler(unittest.TestCase):
                      encoding='utf-8') as f:
             write(nb, f, version=4)
 
-        nb_content, python_content = BaseHandler.get_notebook_contents(None,
+        nb_content, python_content = BaseHandler.get_notebook_contents(base,
                                                                        fname)
         self.assertTrue(len(nb_content) > 0)
         self.assertTrue(len(python_content) > 0)
@@ -391,7 +393,7 @@ class TestBaseHandler(unittest.TestCase):
         args = {"access_token": "Token", "token_type": "not none",
                 "scope": "not none"}
 
-        self.assertEqual(BaseHandler._request_access_token(BaseHandler, args),
+        self.assertEqual(BaseHandler._request_access_token(base, args),
                          "Token")
 
     def test__request_access_token_invalid(self):
@@ -410,7 +412,7 @@ class TestBaseHandler(unittest.TestCase):
         filename = "somename"
         args = [{"files": None}]
 
-        self.assertEqual(BaseHandler._find_existing_gist_by_name(BaseHandler,
+        self.assertEqual(BaseHandler._find_existing_gist_by_name(base,
                                                                  args,
                                                                  filename,
                                                                  filename),
@@ -421,7 +423,7 @@ class TestBaseHandler(unittest.TestCase):
         filename = "somename"
         args = [{"files": [None]}]
 
-        self.assertEqual(BaseHandler._find_existing_gist_by_name(BaseHandler,
+        self.assertEqual(BaseHandler._find_existing_gist_by_name(base,
                                                                  args,
                                                                  filename,
                                                                  filename),
@@ -433,7 +435,7 @@ class TestBaseHandler(unittest.TestCase):
         args = [{"files": filename}, {"files": filename}]
 
         try:
-            file_id = BaseHandler._find_existing_gist_by_name(BaseHandler,
+            file_id = BaseHandler._find_existing_gist_by_name(base,
                                                               args, filename,
                                                               filename)
         except tornado.web.HTTPError as e:
@@ -446,7 +448,7 @@ class TestBaseHandler(unittest.TestCase):
         filename = "somename"
         args = [{"files": "apples"}]
 
-        self.assertEqual(BaseHandler._find_existing_gist_by_name(BaseHandler, args,
+        self.assertEqual(BaseHandler._find_existing_gist_by_name(base, args,
                                                                  filename,
                                                                  filename),
                          None)
@@ -457,7 +459,7 @@ class TestBaseHandler(unittest.TestCase):
         file_id = "123"
         args = [{"files": filename, "id": file_id}]
 
-        self.assertEqual(BaseHandler._find_existing_gist_by_name(BaseHandler, args,
+        self.assertEqual(BaseHandler._find_existing_gist_by_name(base, args,
                                                                  filename,
                                                                  filename),
                          file_id)
@@ -467,7 +469,7 @@ class TestBaseHandler(unittest.TestCase):
         filename = "somename"
         args = [{"files": filename}]
 
-        self.assertEqual(BaseHandler._find_existing_gist_by_name(BaseHandler, args,
+        self.assertEqual(BaseHandler._find_existing_gist_by_name(base, args,
                                                                  filename,
                                                                  filename),
                          None)
@@ -488,7 +490,7 @@ class TestBaseHandler(unittest.TestCase):
         url = "some url"
         args = {"html_url": url}
 
-        self.assertEqual(BaseHandler._verify_gist_response(BaseHandler, args),
+        self.assertEqual(BaseHandler._verify_gist_response(base, args),
                          url)
 
     def test__verify_gist_response_no_url(self):
