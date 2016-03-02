@@ -89,7 +89,7 @@ class TestBaseHandler(unittest.TestCase):
     def _should_throw_error(self, func, args, error):
 
         try:
-            func(None, args)
+            func(self.base, args)
         except tornado.web.HTTPError as e:
             self.assertEqual(str(e), error)
         else:
@@ -308,7 +308,8 @@ class TestBaseHandler(unittest.TestCase):
 
         filename = "somefile"
 
-        self.assertEqual(BaseHandler.get_notebook_filename(self.base), (filename, filename))
+        self.assertEqual(BaseHandler.get_notebook_filename(self.base, "/a/b/c/" + filename), 
+                         (filename, filename))
 
     def test_get_notebook_filename_path_extension(self):
 
