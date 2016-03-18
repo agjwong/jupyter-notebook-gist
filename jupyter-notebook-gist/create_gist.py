@@ -26,6 +26,7 @@ class BaseHandler(IPythonHandler):
     client_id = None
     client_secret = None
 
+
 class GistHandler(BaseHandler):
     """Handler for saving and editing Gists.
 

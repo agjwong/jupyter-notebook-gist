@@ -15,4 +15,3 @@ install:
   - pip install notebook
 # command to run tests
 script: python -m unittest discover
-

@@ -79,7 +79,6 @@ class TestBaseHandler(unittest.TestCase):
                       "get the URL for the gist that was just updated)"
     gitHubError = "HTTP 500: Internal Server Error (ERROR: Github " \
                   "returned the following: "
-    base = BaseHandler()
 
     def _should_throw_error(self, func, args, error):
 
